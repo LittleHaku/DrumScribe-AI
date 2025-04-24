@@ -1,66 +1,68 @@
-# Planning: Automatic Drum Transcription
+# Planning: Automatic Drum Transcription (Notebook-Focused Development)
 
 ## Summary
 
-This project aims to build a Python-based system that takes a raw drum audio track (WAV/MP3 file) as input and outputs a corresponding MIDI file representing the detected drum hits. The core will be a deep neural network (initially a CNN or CRNN) processing Mel-spectrograms to identify the onset times and types of core drum instruments (e.g., kick, snare, hi-hat). A post-processing module converts detected onsets into MIDI notes using the standard General MIDI (GM) mapping with a **fixed velocity**. Optional extensions include PDF notation generation via MuseScore and custom MIDI mapping.
+This project aims to build a Python-based system, developed primarily within a **Jupyter Notebook** for assignment purposes, that takes a raw drum audio track (WAV/MP3 file) as input and outputs a corresponding MIDI file representing the detected drum hits. The core will be a deep neural network (initially a CNN or CRNN) processing Mel-spectrograms to identify the onset times and types of core drum instruments (e.g., kick, snare, hi-hat). A post-processing module converts detected onsets into MIDI notes using the standard General MIDI (GM) mapping with a **fixed velocity**. While developed in a notebook, the structure will follow logical sections (data handling, model, training, inference, post-processing) to facilitate potential future refactoring into Python modules for applications like a web UI.
 
 ---
 
 ## 1. Purpose & Vision
 
 - **Objective**: Automate the transcription of recorded drum tracks into a standard symbolic format (MIDI) to assist musicians, producers, and educators.
+- **Development Approach:** Implement the core functionality within one or more **Jupyter Notebooks** (`.ipynb`) for ease of development, visualization, and assignment submission.
 - **Core Scope**: Accurately detect the **onset time** and **instrument class** for essential kit elements:
-  - **Initial Target Classes:** Kick Drum, Snare Drum, Closed Hi-Hat. (Consider adding Open Hi-Hat if feasible within the timeframe).
+  - **Initial Target Classes:** Kick Drum, Snare Drum, Closed Hi-Hat.
 - **Outcomes**:
   1. **MIDI Export**: Generate a standard General MIDI (GM) file (Channel 10) mapping detected instruments to their standard note numbers (e.g., Kick=36, Snare=38, Closed Hi-Hat=42) with a **fixed, pre-defined velocity** (e.g., 100).
   2. **PDF Notation (Optional Extension)**: Automated engraving via a MIDI-to-sheet music pipeline (e.g., using MuseScore).
   3. **Custom MIDI Mapping (Optional Extension)**: Allow users to provide a mapping file (e.g., JSON) to assign detected instruments to non-GM MIDI notes.
+- **Future Goal:** The notebook implementation should be structured logically to allow relatively straightforward refactoring into separate Python (`.py`) modules for potential integration into a web application or more complex pipelines later.
 
 ---
 
-## 2. System Architecture
+## 2. System Architecture (Conceptual Sections within Notebook)
 
 ### 2.1 Data Ingestion & Preprocessing
 
-- **Input**: Mono or stereo WAV/MP3 files containing isolated drum tracks or mixes where drums are prominent.
-- **Preprocessing**:
+- **Input**: Mono or stereo WAV/MP3 files containing isolated drum tracks or mixes where drums are prominent. Path to input files will be specified within the notebook or via simple variables.
+- **Preprocessing Steps (Implemented as functions/cells):**
   - **Resampling**: Standardize audio to a consistent sample rate (e.g., 44.1 kHz or 22.05 kHz).
   - **Normalization**: Normalize audio amplitude (e.g., peak or RMS).
   - **Time–Frequency Transform**: Compute **Mel-spectrograms** (using STFT followed by Mel filterbank) as the primary input feature for the model. Log-amplitude scaling is recommended.
+  - **Data Loading/Annotation Parsing:** Functions to load audio and corresponding ground truth MIDI/annotations, converting them into suitable formats (e.g., frame-wise labels) for training.
 
 ### 2.2 Model Core
 
-- **Architecture Options**:
-  - **Baseline: CNN**: Frame-wise multi-label classification on Mel-spectrogram patches/frames. Each output neuron corresponds to an instrument class.
-  - **Advanced: CRNN**: CNN front-end for feature extraction per frame + RNN (LSTM/GRU) backend to model temporal dependencies and improve onset localization.
-- **Output**: Per-frame probability vector (shape: `[num_frames, num_classes]`), where each element `p(frame_i, class_j)` indicates the likelihood of instrument `j` being active in frame `i`. The model should be capable of predicting multiple instruments potentially active in the same frame (multi-label).
+- **Architecture Options (Defined as classes/functions):**
+  - **Baseline: CNN**: Frame-wise multi-label classification on Mel-spectrogram patches/frames. Defined using PyTorch/TensorFlow within notebook cells.
+  - **Advanced: CRNN**: CNN front-end + RNN (LSTM/GRU) backend.
+- **Output**: Per-frame probability vector (shape: `[num_frames, num_classes]`), where each element `p(frame_i, class_j)` indicates the likelihood of instrument `j` being active in frame `i`.
 
-### 2.3 Post-Processing
+### 2.3 Post-Processing & MIDI Generation
 
-- **Onset Detection**: Convert frame-wise probabilities into discrete onset events.
+- **Onset Detection (Implemented as functions/cells):**
   - Apply a threshold to the probability outputs for each instrument class.
-  - Perform peak-picking on the thresholded probabilities to find likely onset times (time stamps). Refinements like smoothing or using activation functions designed for onset detection might be explored.
-- **MIDI Generation**:
+  - Perform peak-picking on the thresholded probabilities to find likely onset times (time stamps).
+- **MIDI Generation (Implemented as functions/cells):**
   - For each detected onset `(timestamp, instrument_class)`:
-    - Create a MIDI Note On message.
-    - Map `instrument_class` to its standard GM note number (e.g., Snare -> 38).
-    - Set a **fixed velocity** (e.g., 100).
-    - Set MIDI channel to 9 (standard drum channel, often displayed as 10).
-    - Convert `timestamp` (seconds) to MIDI ticks based on a chosen tempo/time signature (or assume a default).
-  - Use libraries like `mido` or `pretty_midi`.
+    - Create a MIDI Note On message using `mido` or `pretty_midi`.
+    - Map `instrument_class` to its standard GM note number.
+    - Set a **fixed velocity**.
+    - Set MIDI channel to 9 (standard drum channel).
+    - Convert `timestamp` (seconds) to MIDI ticks.
+  - Function to save the generated MIDI data to a file.
 
 ---
 
 ## 3. Constraints & Considerations
 
-- **Simplicity First**: Focus on the initial target classes (Kick, Snare, Closed HH) before adding more.
+- **Development Environment:** Primarily **Jupyter Notebook**. Structure code logically within cells.
+- **Simplicity First**: Focus on the initial target classes (Kick, Snare, Closed HH).
 - **Velocity**: Explicitly **out of scope** for estimation; use fixed velocity.
-- **Polyphony**: The model _output_ should allow simultaneous predictions (multi-label per frame), but initial _training data_ might benefit from focusing on examples without perfectly overlapping onsets if available datasets are challenging.
-- **Latency**: Batch (offline) processing is the goal. Real-time performance is an optional extension.
-- **Data Availability**: Acknowledge limitations of public annotated drum datasets. Plan for potential need for data augmentation or using synthetic data (Section 5).
-- **Evaluation Metrics**:
-  - Frame-level: F1-score, Precision, Recall per instrument class.
-  - **Onset-level**: **F1-score, Precision, Recall using a tolerance window (e.g., +/- 50ms)** around ground truth onsets. This is crucial for evaluating transcription quality.
+- **Polyphony**: Model output allows simultaneous predictions; training data handling might simplify based on dataset characteristics.
+- **Latency**: Batch (offline) processing within the notebook is the goal.
+- **Data Availability**: Acknowledge limitations; plan for augmentation or synthetic data.
+- **Evaluation Metrics**: Frame-level and crucial **Onset-level** metrics (F1, P, R with tolerance window) should be calculated and displayed within the notebook.
 
 ---
 
@@ -69,8 +71,7 @@ This project aims to build a Python-based system that takes a raw drum audio tra
 ### 4.1 Languages & Environments
 
 - **Python 3.8+** with virtualenv or Conda.
-- **Jupyter Notebooks**: For exploration, visualization, and initial prototyping.
-- **Python Scripts (`.py`)**: For reusable functions, training pipelines, and final inference script/module.
+- **Primary Development Tool:** **Jupyter Notebook (`.ipynb`)**. Code will be organized using Markdown headers and cells.
 
 ### 4.2 Core Libraries
 
@@ -78,37 +79,39 @@ This project aims to build a Python-based system that takes a raw drum audio tra
 - **Deep Learning**: `PyTorch` + `TorchAudio` **OR** `TensorFlow/Keras`.
 - **Numerical**: `NumPy`.
 - **MIDI I/O**: `mido` **or** `pretty_midi`.
-- **Visualization**: `Matplotlib`, `seaborn`.
-- **Optional PDF**: `MuseScore` (command-line interface for automation).
+- **Visualization**: `Matplotlib`, `seaborn` (used extensively within the notebook).
+- **Notebook Environment:** `jupyterlab` or `notebook`.
+- **Optional PDF**: `MuseScore` (command-line interface).
 
 ### 4.3 Project Structure & Management
 
-- **Directory Structure**: Standard ML layout (e.g., `data/`, `src/`, `notebooks/`, `models/`, `scripts/`, `docs/`).
-- **Version Control**: `Git` + `GitHub` (or similar).
-- **Task Tracking**: `docs/TASKS.md` or project management tool.
+- **Primary Artifact:** One or more `.ipynb` files containing the core logic, training, and inference steps.
+- **Supporting Directory Structure:** Maintain a standard structure for organization outside the notebook:
+  - `data/`: For raw and processed datasets.
+  - `models/`: To save trained model checkpoints.
+  - `output/`: To save generated MIDI files.
+  - `docs/`: For planning documents (`PLANNING.md`, `TASKS.md`).
+- **Version Control**: `Git` + `GitHub` (or similar) - Track changes to the notebook(s) and supporting files. Be mindful of large notebook diffs.
+- **Task Tracking**: `docs/TASKS.md` outlining steps _within_ the notebook development process.
 
 ---
 
 ## 5. Data & Datasets
 
 - **Primary Goal**: Obtain datasets with aligned audio drum recordings and ground truth MIDI annotations.
-- **Public Datasets**:
-  - `ENST-Drums`: Includes separated stems and annotations (may require alignment checking).
-  - `IDMT-SMT-Drums`: Another source for real drum recordings.
-  - _(Search for others specifically providing audio-MIDI alignment for drums)_.
-- **Synthetic Data Generation**:
-  - **Strategy**: Use existing MIDI drum patterns (e.g., from `Lakh MIDI Dataset` filtered for drums, or purpose-created patterns).
-  - Render these MIDI files to audio using high-quality drum VSTs/samplers (e.g., free samplers like Sitala, commercial ones if available) to create perfectly aligned (audio, MIDI) pairs.
-- **Data Augmentation**: Apply techniques like time-stretching, pitch-shifting (small amounts), adding background noise, and varying gain to increase model robustness, especially if real data is scarce.
-- **Data Splits**: Carefully define Training, Validation, and Test sets. Ensure no data leakage between sets (e.g., different recordings from the same drummer/session should ideally be in the same split).
+- **Public Datasets**: `ENST-Drums`, `IDMT-SMT-Drums`, etc.
+- **Synthetic Data Generation**: Strategy using MIDI + VSTs.
+- **Data Augmentation**: Techniques like time-stretching, pitch-shifting, noise addition.
+- **Data Splits**: Define Training, Validation, Test sets (files managed outside the notebook, logic within).
 
 ---
 
-## 6. Optional Extensions (Post-Core Functionality)
+## 6. Optional Extensions (Post-Core Functionality / Post-Assignment)
 
-1. **Expand Instrument Classes**: Add Open Hi-Hat, Toms, Crash, Ride cymbals.
-2. **PDF Notation**: Implement the MuseScore CLI pipeline (MIDI -> MusicXML -> PDF).
-3. **Custom MIDI Mapping**: Implement loading of a JSON file to override default GM mapping.
-4. **Velocity Estimation**: Modify the model or post-processing to estimate hit velocity.
-5. **Real-Time Transcription**: Adapt model for low-latency processing (e.g., using TorchScript, ONNX Runtime).
-6. **Web UI**: Build a simple Flask/FastAPI interface for audio upload and MIDI download.
+1. Expand Instrument Classes.
+2. PDF Notation.
+3. Custom MIDI Mapping.
+4. Velocity Estimation.
+5. **Refactor Notebook to `.py` Modules:** Prepare code for integration into other applications (like a web app).
+6. Real-Time Transcription.
+7. Web UI.
