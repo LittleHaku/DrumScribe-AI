@@ -2,23 +2,23 @@
 
 ## Phase 1: Setup & Foundation
 
-- [ ] **1.1 Project Initialization**
-  - [ ] Create main project directory.
-  - [ ] Set up standard ML project structure (`data/`, `src/`, `notebooks/`, `models/`, `scripts/`, `docs/`).
-  - [ ] Initialize Git repository (`git init`).
+- [x] **1.1 Project Initialization**
+  - [x] Create main project directory.
+  - [x] Set up standard ML project structure (`data/`, `src/`, `notebooks/`, `models/`, `scripts/`, `docs/`).
+  - [x] Initialize Git repository (`git init`).
   - [ ] Create remote repository (e.g., on GitHub) and push initial structure.
   - [ ] Create initial `README.md`.
-- [ ] **1.2 Environment Setup**
-  - [ ] Create Python virtual environment (e.g., `conda create ...` or `python -m venv ...`).
-  - [ ] Activate the environment.
-  - [ ] Create `requirements.txt` file.
-  - [ ] Install core dependencies (`numpy`, `librosa`, `soundfile`, `matplotlib`).
-  - [ ] Install chosen Deep Learning framework (`pytorch`+`torchaudio` OR `tensorflow`/`keras`).
-  - [ ] Install MIDI library (`mido` OR `pretty_midi`).
-  - [ ] Verify installations.
-- [ ] **1.3 Initial Documentation**
-  - [ ] Copy final `PLANNING.md` into `docs/`.
-  - [ ] Finalize this `TASKS.md` file.
+- [x] **1.2 Environment Setup**
+  - [x] Create Python virtual environment (e.g., `conda create ...` or `python -m venv ...`).
+  - [x] Activate the environment.
+  - [x] Create `requirements.txt` file.
+  - [x] Install core dependencies (`numpy`, `librosa`, `soundfile`, `matplotlib`).
+  - [x] Install chosen Deep Learning framework (`pytorch`+`torchaudio` OR `tensorflow`/`keras`).
+  - [x] Install MIDI library (`mido` OR `pretty_midi`).
+  - [x] Verify installations.
+- [x] **1.3 Initial Documentation**
+  - [x] Copy final `PLANNING.md` into `docs/`.
+  - [x] Finalize this `TASKS.md` file.
 
 ---
 

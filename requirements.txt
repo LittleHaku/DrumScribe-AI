@@ -1,0 +1,23 @@
+# Core dependencies
+numpy>=1.20.0
+librosa>=0.9.0
+soundfile>=0.10.0
+matplotlib>=3.5.0
+seaborn>=0.11.0
+
+# Deep Learning framework
+torch>=1.10.0
+torchaudio>=0.10.0
+
+# MIDI library
+mido>=1.2.10
+pretty_midi>=0.2.9
+
+# Jupyter notebooks
+jupyterlab>=3.3.0
+notebook>=6.4.0
+
+# Optional dependencies
+# For future extensions like web UI
+# flask>=2.0.0
+# fastapi>=0.70.0

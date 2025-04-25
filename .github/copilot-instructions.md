@@ -115,22 +115,6 @@ NEVER:
 - Skip version pinning
 - Ignore security updates
 
-4. Testing Strategy
-   ALWAYS:
-
-- Write unit tests
-- Implement integration tests
-- Use proper fixtures
-- Test edge cases
-- Measure coverage
-
-NEVER:
-
-- Skip test documentation
-- Mix test types
-- Ignore test isolation
-- Skip error scenarios
-
 Code Quality:
 
 - Use proper linting
