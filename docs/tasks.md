@@ -106,7 +106,7 @@ graph TD
 - [ ] **Notebook 2: Feature Engineering**
 
   - [x] Create notebook `notebooks/02_feature_engineering.ipynb`
-  - [ ] Implement audio preprocessing (resampling, normalization)
+  - [x] Implement audio preprocessing (resampling, normalization)
   - [ ] Extract Mel spectrograms with different parameters
   - [ ] Visualize spectrograms and compare configurations
   - [ ] Extract onset and velocity information from MIDI files
