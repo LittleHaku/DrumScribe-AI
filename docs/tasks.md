@@ -95,11 +95,11 @@ graph TD
 - [ ] **Notebook 1: Dataset Exploration & Subsetting**
   - [x] Create notebook `notebooks/01_dataset_exploration.ipynb`
   - [ ] Explore E-GMD structure: audio files, MIDI annotations, metadata
-  - [ ] Visualize examples of audio waveforms and corresponding MIDI
+  - [x] Visualize examples of audio waveforms and corresponding MIDI
   - [ ] Develop strategy for creating a manageable subset
-  - [ ] Implement subset extraction pipeline
-  - [ ] Create balanced train/validation/test splits
-  - [ ] Generate dataset statistics and visualizations
+  - [x] Implement subset extraction pipeline
+  - [x] Create balanced train/validation/test splits
+  - [x] Generate dataset statistics and visualizations
 
 ## 🔍 Milestone 2: Feature Engineering & Data Preparation
 
