@@ -79,24 +79,24 @@ graph TD
 
 ## 💾 Milestone 1: Dataset Acquisition & Exploration
 
-- [ ] **Project Setup**
+- [x] **Project Setup**
 
   - [x] Create and configure Python virtual environment
   - [x] Install core dependencies (librosa, numpy, matplotlib, pytorch, etc.)
   - [x] Create proper directory structure for data organization
   - [x] Set up version control and initial repository
 
-- [ ] **E-GMD Dataset Acquisition**
+- [x] **E-GMD Dataset Acquisition**
 
-  - [ ] Download the E-GMD dataset (or a portion of it)
-  - [ ] Understand dataset structure and organization
-  - [ ] Set up metadata handling for audio-MIDI pairs
+  - [x] Download the E-GMD dataset (or a portion of it)
+  - [x] Understand dataset structure and organization
+  - [x] Set up metadata handling for audio-MIDI pairs
 
-- [ ] **Notebook 1: Dataset Exploration & Subsetting**
+- [x] **Notebook 1: Dataset Exploration & Subsetting**
   - [x] Create notebook `notebooks/01_dataset_exploration.ipynb`
-  - [ ] Explore E-GMD structure: audio files, MIDI annotations, metadata
+  - [x] Explore E-GMD structure: audio files, MIDI annotations, metadata
   - [x] Visualize examples of audio waveforms and corresponding MIDI
-  - [ ] Develop strategy for creating a manageable subset
+  - [x] Develop strategy for creating a manageable subset
   - [x] Implement subset extraction pipeline
   - [x] Create balanced train/validation/test splits
   - [x] Generate dataset statistics and visualizations
@@ -105,7 +105,7 @@ graph TD
 
 - [ ] **Notebook 2: Feature Engineering**
 
-  - [ ] Create notebook `notebooks/02_feature_engineering.ipynb`
+  - [x] Create notebook `notebooks/02_feature_engineering.ipynb`
   - [ ] Implement audio preprocessing (resampling, normalization)
   - [ ] Extract Mel spectrograms with different parameters
   - [ ] Visualize spectrograms and compare configurations
