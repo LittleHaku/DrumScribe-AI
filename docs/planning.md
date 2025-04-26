@@ -11,7 +11,7 @@ We will build an Automatic Drum Transcription (ADT) system using the Expanded Gr
 1. **Dataset Selection**
    - Use the Expanded Groove MIDI Dataset (E-GMD) from Magenta
    - E-GMD contains 444 hours of audio from 43 drum kits with human-performed velocity annotations
-   - Dataset is available at: https://magenta.tensorflow.org/datasets/e-gmd
+   - Dataset is available at: [https://magenta.tensorflow.org/datasets/e-gmd](https://magenta.tensorflow.org/datasets/e-gmd)
 
 2. **Working with Large Dataset**
    - Create a subset extraction pipeline to select a manageable portion (~5-10GB)
