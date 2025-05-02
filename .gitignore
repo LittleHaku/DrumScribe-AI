@@ -1,6 +1,7 @@
 # Data
 raw/
 processed/
+subset/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
