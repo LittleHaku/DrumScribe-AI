@@ -103,7 +103,7 @@ graph TD
 
 ## 🔍 Milestone 2: Feature Engineering & Data Preparation
 
-- [ ] **Notebook 2: Feature Engineering**
+- [x] **Notebook 2: Feature Engineering**
 
   - [x] Create notebook `notebooks/02_feature_engineering.ipynb`
   - [x] Implement audio preprocessing (resampling, normalization)
@@ -111,7 +111,7 @@ graph TD
   - [x] Visualize spectrograms and compare configurations
   - [x] Extract onset and velocity information from MIDI files
   - [x] Align audio features with MIDI ground truth
-  - [ ] Create and save training examples
+  - [x] Create and save training examples
 
 - [ ] **Data Pipeline Development**
   - [ ] Create efficient data loader for batched processing
