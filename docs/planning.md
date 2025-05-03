@@ -20,6 +20,8 @@ We will build an Automatic Drum Transcription (ADT) system using the Expanded Gr
 
 3. **Data Organization**
    - Extract audio in WAV format and corresponding MIDI files
+   - Convert Roland drum mappings to a simplified General MIDI mapping
+   - Focus on six core drum categories: Kick, Snare, Tom, HiHat, Crash, and Ride
    - Create metadata records connecting audio and MIDI pairs
    - Split into train/validation/test sets (70/15/15%)
 
@@ -30,13 +32,14 @@ We will build an Automatic Drum Transcription (ADT) system using the Expanded Gr
 1. **Notebook 1: Dataset Exploration & Subsetting**
    - Explore E-GMD dataset structure
    - Develop subset extraction strategy
+   - Implement simplification of drum mappings (Roland → simplified GM)
    - Create a balanced, representative subset
    - Analyze audio and MIDI characteristics
 
 2. **Notebook 2: Feature Engineering**
    - Convert audio to Mel spectrograms
    - Visualize different spectrogram parameters
-   - Extract onset and velocity information from MIDI
+   - Extract onset and velocity information from simplified MIDI
    - Align audio features with MIDI ground truth
 
 3. **Notebook 3: Model Development**
@@ -60,7 +63,7 @@ We will build an Automatic Drum Transcription (ADT) system using the Expanded Gr
   - Convolutional layers for spatial feature extraction
   - Optional: Recurrent layers for temporal modeling
 - **Output Heads**:
-  - Onset detection head with sigmoid activation
+  - Onset detection head with sigmoid activation (one output per simplified drum type)
   - Velocity prediction head with appropriate activation (linear/tanh)
 - **Multi-task Learning**:
   - Joint training with weighted losses for both onsets and velocities
