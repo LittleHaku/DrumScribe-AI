@@ -107,10 +107,10 @@ graph TD
 
   - [x] Create notebook `notebooks/02_feature_engineering.ipynb`
   - [x] Implement audio preprocessing (resampling, normalization)
-  - [ ] Extract Mel spectrograms with different parameters
-  - [ ] Visualize spectrograms and compare configurations
-  - [ ] Extract onset and velocity information from MIDI files
-  - [ ] Align audio features with MIDI ground truth
+  - [x] Extract Mel spectrograms with different parameters
+  - [x] Visualize spectrograms and compare configurations
+  - [x] Extract onset and velocity information from MIDI files
+  - [x] Align audio features with MIDI ground truth
   - [ ] Create and save training examples
 
 - [ ] **Data Pipeline Development**
