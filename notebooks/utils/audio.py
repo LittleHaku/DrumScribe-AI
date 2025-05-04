@@ -1,9 +1,10 @@
 """
-Audio utilities for synthesis and playback.
+Audio utilities for synthesis, playback and feature extraction.
 """
 import subprocess
 import tempfile
 from pathlib import Path
+import numpy as np
 import librosa
 from IPython.display import Audio, display, HTML
 
@@ -85,3 +86,73 @@ def play_audio_and_midi(audio_path, pm, sr=44100, soundfont_path=None):
             print(
                 f"\nCannot synthesize MIDI: SoundFont not found at {soundfont_path}")
             print("Download a SoundFont file and update the soundfont_path parameter.")
+
+
+def preprocess_audio(audio_path, target_sr):
+    """
+    Loads, resamples, and normalizes an audio file.
+
+    Args:
+        audio_path (Path): Path to the input audio file.
+        target_sr (int): The target sample rate to resample to.
+
+    Returns:
+        Optional[np.ndarray]: The preprocessed audio as a NumPy array,
+                             or None if loading fails.
+    """
+    try:
+        # Load audio, resample to target_sr, convert to mono
+        audio, sr = librosa.load(audio_path, sr=target_sr, mono=True)
+
+        # Peak normalization
+        max_abs_val = np.max(np.abs(audio))
+        if max_abs_val > 0:
+            audio_normalized = audio / (max_abs_val + 1e-8)
+        else:
+            audio_normalized = audio
+
+        return audio_normalized
+    except Exception as e:
+        print(f"Error processing {audio_path}: {e}")
+        return None
+
+
+def compute_mel_spectrogram(
+    y,
+    sr,
+    n_fft=2048,
+    hop_length=512,
+    n_mels=229,
+    fmin=20.0,
+    fmax=8000.0
+):
+    """
+    Computes a log-mel spectrogram from audio data.
+
+    Args:
+        y: Audio time series
+        sr: Sample rate
+        n_fft: FFT window size
+        hop_length: Hop length between frames
+        n_mels: Number of mel bands
+        fmin: Lowest frequency (Hz)
+        fmax: Highest frequency (Hz)
+
+    Returns:
+        Log-mel spectrogram as a numpy array
+    """
+    # Compute mel spectrogram
+    mel_spec = librosa.feature.melspectrogram(
+        y=y,
+        sr=sr,
+        n_fft=n_fft,
+        hop_length=hop_length,
+        n_mels=n_mels,
+        fmin=fmin,
+        fmax=fmax
+    )
+
+    # Convert to log scale (dB)
+    log_mel_spec = librosa.power_to_db(mel_spec, ref=np.max)
+
+    return log_mel_spec

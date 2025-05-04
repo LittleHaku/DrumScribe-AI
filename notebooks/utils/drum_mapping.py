@@ -1,8 +1,22 @@
 """
-Utilities for drum MIDI mapping and conversion.
+Drum MIDI mapping utilities.
 """
 import pretty_midi
 from pathlib import Path
+
+# Standard mapping for the main drum components we track
+GM_DRUM_MAPPING = {
+    36: "Kick",
+    38: "Snare",
+    42: "HiHat",
+    47: "Tom",
+    49: "Crash",
+    51: "Ride"
+}
+
+# Lists derived from the mapping for easy access
+MAIN_DRUMS = list(GM_DRUM_MAPPING.keys())
+MAIN_DRUM_NAMES = list(GM_DRUM_MAPPING.values())
 
 
 def get_roland_to_simplified_category(pitch):
