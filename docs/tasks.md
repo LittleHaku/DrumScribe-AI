@@ -148,6 +148,15 @@ graph TD
   - [x] Implement early stopping and learning rate scheduling
   - [x] Evaluate model performance on validation set
 
+### 3.B Overfitting Mitigation Techniques
+
+Based on research from OaF-Drums and similar drum transcription models, we implement several techniques to reduce overfitting:
+
+1. **Reduced Model Capacity**: Smaller LSTM units and convolutional layers
+2. **Higher Dropout**: Especially after LSTM outputs
+3. **Mixup Augmentation**: Mix pairs of training examples
+4. **Shuffled Mixup**: Further shuffle short segments for temporal diversity
+
 ### 🔁 Milestone 3.5: Transfer Learning
 
 - [ ] **Notebook 4: Transfer Learning**
