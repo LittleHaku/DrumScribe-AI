@@ -103,6 +103,8 @@ def visualize_and_listen(
             # Get batch data
             inputs = batch["input"].to(device)
             onset_targets = batch["onset_target"]
+            # Add this line to get velocity targets
+            velocity_targets = batch["velocity_target"]
             processed_file_paths = batch["file_paths"]
 
             # Get predictions
@@ -130,6 +132,8 @@ def visualize_and_listen(
                 # Get sample data
                 input_spec = inputs[i].cpu()
                 gt_onsets = onset_targets[i]
+                # Add this line to get velocity targets for this item
+                gt_velocities = velocity_targets[i]
                 pred_onset_probs = onset_probs[i]
                 pred_velocities = velocity_preds[i]
 
@@ -137,9 +141,9 @@ def visualize_and_listen(
                 frame_times = librosa.frames_to_time(
                     np.arange(n_frames), sr=sr, hop_length=hop_length)
 
-                # Plot visualizations
+                # Plot visualizations - pass ground truth velocities
                 _plot_comparison(
-                    input_spec, gt_onsets, pred_onset_probs, pred_velocities,
+                    input_spec, gt_onsets, gt_velocities, pred_onset_probs, pred_velocities,
                     threshold, file_stem, drum_names, hop_length
                 )
 
@@ -157,7 +161,7 @@ def visualize_and_listen(
     print(f"\n--- Visualization & Listening Finished ---")
 
 
-def _plot_comparison(input_spec, gt_onsets, pred_onset_probs, pred_velocities,
+def _plot_comparison(input_spec, gt_onsets, gt_velocities, pred_onset_probs, pred_velocities,
                      threshold, file_stem, drum_names, hop_length):
     """Plot spectrogram, ground truth and predictions side by side."""
     plt.figure(figsize=(15, 8))
@@ -173,12 +177,13 @@ def _plot_comparison(input_spec, gt_onsets, pred_onset_probs, pred_velocities,
     plt.ylabel('Mel Bin')
     plt.xticks([])
 
-    # Plot ground truth
+    # Ground truth velocities (masked by onsets)
     plt.subplot(3, 1, 2)
-    plt.imshow(gt_onsets.numpy(), aspect='auto',
-               origin='lower', cmap='Reds', vmin=0, vmax=1)
-    plt.colorbar(label='Onset (GT)')
-    plt.title('Ground Truth Onsets')
+    masked_velocity_gt = gt_velocities * gt_onsets
+    plt.imshow(masked_velocity_gt.numpy(), aspect='auto',
+               origin='lower', cmap='Oranges', vmin=0, vmax=1)
+    plt.colorbar(label='Velocity (GT, 0-1)')
+    plt.title('Ground Truth Onsets & Velocities')  # Updated title
     if drum_names:
         plt.yticks(np.arange(len(drum_names)), drum_names)
     plt.xticks([])
