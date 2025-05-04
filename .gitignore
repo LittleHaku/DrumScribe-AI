@@ -2,7 +2,7 @@
 raw/
 processed/
 subset/
-soundfonts/
+soundfont/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
