@@ -67,7 +67,14 @@ We will build an Automatic Drum Transcription (ADT) system using the Expanded Gr
    - Train with appropriate loss functions
    - Track and visualize learning progress
 
-4. **Notebook 4: Inference & Evaluation**
+4. **Notebook 4: Transfer Learning Approaches**
+
+   - Implement transfer learning using pre-trained audio models with mel spectrograms
+   - Compare audio-specific models (PANNs, VGGish) vs image models
+   - Apply staged fine-tuning approach (freeze backbone, train heads first)
+   - Evaluate performance improvements over baseline models
+
+5. **Notebook 5: Inference & Evaluation**
    - Implement post-processing for predictions
    - Convert model outputs to MIDI
    - Compare with ground truth
@@ -77,15 +84,27 @@ We will build an Automatic Drum Transcription (ADT) system using the Expanded Gr
 
 ## 3) Model Architecture
 
-- **Input**: Log-Mel spectrogram of audio frames
-- **Feature Extraction**:
-  - Convolutional layers for spatial feature extraction
+- **Baseline Model**:
+  - Input: Log-Mel spectrogram of audio frames
+  - Feature Extraction: Convolutional layers for spatial feature extraction
   - Optional: Recurrent layers for temporal modeling
-- **Output Heads**:
-  - Onset detection head with sigmoid activation (6 outputs for all drum types: Kick, Snare, HiHat, Tom, Crash, Ride)
-  - Velocity prediction head with appropriate activation (linear/tanh)
-- **Multi-task Learning**:
-  - Joint training with weighted losses for both onsets and velocities
+  - Dual output heads for onset detection and velocity prediction
+
+- **Transfer Learning Models**:
+  - Audio-Specific Approach (Primary):
+    - Backbone: Pre-trained audio models (PANNs, VGGish, AST)
+    - Adaptation: Feature mapping layers to handle spectrograms
+    - Same dual-head structure for task-specific outputs
+
+  - Image-Based Approach (Alternative):
+    - Backbone: Pre-trained image models (ResNet, EfficientNet)
+    - Adaptation: Channel expansion for mel spectrograms
+    - Temporal dimension preservation techniques
+    - Same dual-head structure for task-specific outputs
+
+- **Training Strategy**:
+  - Multi-task learning with weighted losses for both onsets and velocities
+  - Staged fine-tuning with gradually unfreezing backbone layers
 
 ---
 
@@ -123,6 +142,6 @@ We will build an Automatic Drum Transcription (ADT) system using the Expanded Gr
 
 1. **Week 1**: ✅ Dataset exploration, subsetting, and preprocessing
 2. **Week 2**: ✅ Feature engineering and dataset preparation
-3. **Current**: Data pipeline development and initial model architecture
-4. **Next**: Model training and refinement
-5. **Final Week**: Evaluation, MIDI generation, and presentation preparation
+3. **Week 3**: ✅ Baseline model development and evaluation
+4. **Week 4**: Transfer learning implementation and comparison
+5. **Final Week**: Comprehensive evaluation, MIDI generation, and presentation preparation

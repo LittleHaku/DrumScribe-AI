@@ -24,10 +24,18 @@ graph TD
         H -- Trains --> J[Trained Model Checkpoints];
     end
 
+    subgraph "Milestone 3.5: Transfer Learning"
+        J --> TL{Notebook 4: Transfer Learning};
+        TL -- Uses --> PTM[Pre-trained Audio/Image Models];
+        TL -- Produces --> TLM[Enhanced Model Checkpoints];
+    end
+
     subgraph "Milestone 4: Inference & Evaluation"
-        J --> K{Notebook 4: Inference & Evaluation};
+        J --> K{Notebook 5: Inference & Evaluation};
+        TLM --> K;
         K -- Generates --> L[Transcribed MIDI Files];
         K -- Calculates --> M[Evaluation Metrics & Plots];
+        K -- Compares --> COMP[Baseline vs Transfer Learning];
     end
 
     subgraph "Milestone 5: Code Modularization"
@@ -35,9 +43,10 @@ graph TD
         E --> O[src/feature_extraction.py];
         E --> P[src/midi_utils.py];
         H --> Q[src/model.py];
+        TL --> QTL[src/transfer_models.py];
         K --> R[src/evaluation.py];
-        N & O & P & Q & R --> S[scripts/train.py];
-        N & O & P & Q & R --> T[scripts/transcribe.py];
+        N & O & P & Q & QTL & R --> S[scripts/train.py];
+        N & O & P & Q & QTL & R --> T[scripts/transcribe.py];
     end
 
     subgraph "Milestone 6: Documentation & Presentation"
@@ -65,8 +74,10 @@ graph TD
     style D fill:#f9f,stroke:#333,stroke-width:2px
     style F fill:#f9f,stroke:#333,stroke-width:2px
     style J fill:#ccf,stroke:#333,stroke-width:2px
+    style TLM fill:#ccf,stroke:#333,stroke-width:2px
     style L fill:#cfc,stroke:#333,stroke-width:2px
     style M fill:#cfc,stroke:#333,stroke-width:2px
+    style COMP fill:#cfc,stroke:#333,stroke-width:2px
 ```
 
 **Explanation:**
@@ -113,35 +124,47 @@ graph TD
   - [x] Align audio features with MIDI ground truth
   - [x] Create and save training examples
 
-- [ ] **Data Pipeline Development**
-  - [ ] Create efficient data loader for batched processing
-  - [ ] Implement on-the-fly data augmentation
-  - [ ] Develop feature caching mechanism for faster training
+- [x] **Data Pipeline Development**
+  - [x] Create efficient data loader for batched processing
+  - [x] Implement on-the-fly data augmentation
+  - [x] Develop feature caching mechanism for faster training
 
 ## 🏗️ Milestone 3: Model Development & Training
 
-- [ ] **Notebook 3: Model Development**
+- [x] **Notebook 3: Model Development**
 
-  - [ ] Create notebook `notebooks/03_model_development.ipynb`
-  - [ ] Design model architecture for both onset and velocity prediction
-  - [ ] Implement model in PyTorch
-  - [ ] Define appropriate loss functions
-  - [ ] Create training loop with metrics tracking
-  - [ ] Implement validation procedure
-  - [ ] Visualize training progress
-  - [ ] Save model checkpoints
+  - [x] Create notebook `notebooks/03_model_development.ipynb`
+  - [x] Design model architecture for both onset and velocity prediction
+  - [x] Implement model in PyTorch
+  - [x] Define appropriate loss functions
+  - [x] Create training loop with metrics tracking
+  - [x] Implement validation procedure
+  - [x] Visualize training progress
+  - [x] Save model checkpoints
 
-- [ ] **Model Refinement**
-  - [ ] Experiment with different architectures
-  - [ ] Tune hyperparameters
-  - [ ] Implement early stopping and learning rate scheduling
-  - [ ] Evaluate model performance on validation set
+- [x] **Model Refinement**
+  - [x] Experiment with different architectures
+  - [x] Tune hyperparameters
+  - [x] Implement early stopping and learning rate scheduling
+  - [x] Evaluate model performance on validation set
+
+### 🔁 Milestone 3.5: Transfer Learning
+
+- [ ] **Notebook 4: Transfer Learning**
+  - [ ] Create notebook `notebooks/04_transfer_learning.ipynb`
+  - [ ] Research and implement audio-specific pre-trained models
+  - [ ] Optional: Implement image recognition pre-trained models (since we work with mel spectrograms)
+  - [ ] Develop staged fine-tuning pipeline:
+    - [ ] Initial training with frozen layers
+    - [ ] Gradual unfreezing of layers
+  - [ ] Adapt architecture to work with mel spectrograms
+  - [ ] Compare performance with base model
 
 ## 📊 Milestone 4: Inference & Evaluation
 
-- [ ] **Notebook 4: Inference & Evaluation**
+- [ ] **Notebook 5: Inference & Evaluation**
 
-  - [ ] Create notebook `notebooks/04_inference_evaluation.ipynb`
+  - [ ] Create notebook `notebooks/05_inference_evaluation.ipynb`
   - [ ] Implement inference pipeline
   - [ ] Develop post-processing for predictions
   - [ ] Convert model outputs to MIDI
